@@ -9,6 +9,8 @@ export type Profile = {
   id: string;
   name: string;
   color: string;
+  gameHistory: Game[];
+  rank: number;
 };
 
 export type Player = Profile & {

@@ -1,29 +1,30 @@
 "use client";
 
 import { useState } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Header } from "./components/Header";
 import { HomePage } from "./components/HomePage";
 import { Profile } from "./lib/types";
+import { NewPlayerModal } from "./components/NewPlayerModal";
 
-const initialProfiles: Profile[] = [
-  { id: "you", name: "You", color: "coral" },
-  { id: "mina", name: "Mina", color: "blue" },
-  { id: "jules", name: "Jules", color: "gold" },
-  { id: "rook", name: "Rook", color: "teal" },
-];
+const queryClient = new QueryClient();
 
-export default function Home() {
-  const [profiles, setProfiles] = useState(initialProfiles);
-  const [selectedProfileId, setSelectedProfileId] = useState(
-    initialProfiles[0].id,
-  );
-  const selectedProfile =
-    profiles.find((profile) => profile.id === selectedProfileId) ?? profiles[0];
+const Home = () => {
+  const [isNewPlayerModalOpen, setIsNewPlayerModalOpen] = useState(false);
+  const [usersList, setUsersList] = useState<Profile[]>([]);
 
   return (
-    <main className="app-shell">
-      <Header />
-      <HomePage profile={selectedProfile} />
-    </main>
+    <QueryClientProvider client={queryClient}>
+      <main className="app-shell bg-black h-dvh">
+        <Header setIsModalOpen={() => setIsNewPlayerModalOpen(true)} />
+        <HomePage usersList={usersList} setUsersList={setUsersList} />
+        <NewPlayerModal
+          isModalOpen={isNewPlayerModalOpen}
+          setIsModalOpen={() => setIsNewPlayerModalOpen(false)}
+        />
+      </main>
+    </QueryClientProvider>
   );
-}
+};
+
+export default Home;

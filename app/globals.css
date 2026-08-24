@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+@theme {
+  --color-mahjong-red: #7d0914;
+  --color-mahjong-gold: #d8a84e;
+}
