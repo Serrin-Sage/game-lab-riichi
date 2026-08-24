@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Profile {
+  id             String       @id @default(uuid()) @db.Uuid
+  name           String
+  normalizedName String       @unique
+  color          String       @default("coral")
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  gamePlayers    GamePlayer[]
+
+  @@index([name])
+}
+
+model Game {
+  id        String       @id @default(uuid()) @db.Uuid
+  mode      GameMode
+  playedAt  DateTime     @default(now())
+  createdAt DateTime     @default(now())
+  players   GamePlayer[]
+
+  @@index([playedAt])
+}
+
+model GamePlayer {
+  id         String   @id @default(uuid()) @db.Uuid
+  gameId     String   @db.Uuid
+  profileId  String   @db.Uuid
+  score      Int
+  placement  Int
+  adjustment Decimal  @db.Decimal(8, 2)
+  game       Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  profile    Profile  @relation(fields: [profileId], references: [id], onDelete: Restrict)
+
+  @@unique([gameId, profileId])
+  @@index([profileId, gameId])
+}
+
+enum GameMode {
+  THREE_PLAYER
+  FOUR_PLAYER
+}

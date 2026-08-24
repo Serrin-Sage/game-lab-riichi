@@ -1,4 +1,19 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Game Lab Riichi is a mobile-first Riichi Mahjong score tracker.
+
+## Data architecture
+
+The application uses **Supabase Postgres** as its hosted database and **Prisma** as its type-safe ORM and migration tool. MongoDB and Supabase Auth are intentionally not used.
+
+Profiles are public, selectable identities with generated UUIDs and unique names. There is no login, so profiles should not be treated as private accounts. Add authentication or a profile PIN before using this model for sensitive data.
+
+## Database setup
+
+1. Create a Supabase project and copy its pooled connection string into `DATABASE_URL`.
+2. Copy the direct database connection string into `DIRECT_URL` for migrations.
+3. Copy `.env.example` to `.env` and fill in both values.
+4. Run `npm run db:generate` and `npm run db:migrate`.
+
+The Prisma schema stores profiles, games, raw scores, placements, and calculated adjustments. Game submission recalculates scores on the server and writes the game and its player results in one transaction.
 
 ## Getting Started
 
