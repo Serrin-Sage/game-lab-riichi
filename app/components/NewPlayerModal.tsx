@@ -1,6 +1,5 @@
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { ChangeEvent, FormEvent, useState } from "react";
-import { createProfile } from "../actions/profiles";
 import supabase from "../lib/subabase/supabase-client";
 
 interface NewPlayerModalProps {
