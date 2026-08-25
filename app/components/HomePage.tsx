@@ -1,37 +1,37 @@
-import supabase from "../lib/subabase/supabase-client";
+"use client";
+
 import { Profile } from "../lib/types";
-import { useQuery } from "@tanstack/react-query";
+import { GameForm } from "./GameForm";
+import { useState } from "react";
 
-export const HomePage = () => {
-  const fetchUsers = async (): Promise<Profile[]> => {
-    const { data, error } = await supabase.from("Users").select("*");
+interface HomePageProps {
+  userList: Profile[];
+  isLoading: boolean;
+  isError: boolean;
+}
 
-    if (error) {
-      throw error;
-    }
-
-    return data ?? [];
-  };
-  const {
-    data: usersList = [],
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["users"],
-    queryFn: fetchUsers,
-  });
-
+export const HomePage = ({ userList, isLoading, isError }: HomePageProps) => {
+  const [isGameFormModalOpen, setIsGameFormModalOpen] = useState(false);
   return (
     <div className="profile-welcome content-wrap text-white" id="top">
-      <h1>
-        Welcome, <em></em>.
-      </h1>
+      <div className="flex justify-between p-2 cursor-pointer">
+        <h1>
+          Welcome, <em></em>.
+        </h1>
+        <div onClick={() => setIsGameFormModalOpen(true)}>New Game Form</div>
+      </div>
       <p className="lede">Choose a profile above to view its score overview.</p>
       {isLoading && <p>Loading users...</p>}
       {isError && <p>Unable to load users.</p>}
       {!isLoading &&
         !isError &&
-        usersList.map((user) => <div key={user.id}>{user.name}</div>)}
+        userList.map((user) => <div key={user.id}>{user.name}</div>)}
+      {isGameFormModalOpen && (
+        <GameForm
+          isModalOpen={isGameFormModalOpen}
+          setIsModalOpen={setIsGameFormModalOpen}
+        />
+      )}
     </div>
   );
 };

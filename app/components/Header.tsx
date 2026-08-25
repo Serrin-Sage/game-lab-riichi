@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu } from "@headlessui/react";
+import { Menu, MenuButton, MenuItems } from "@headlessui/react";
 
 interface HeaderProps {
   setIsModalOpen: (val: boolean) => void;
@@ -12,7 +12,10 @@ export const Header = ({ setIsModalOpen }: HeaderProps) => {
         <h1>Game Lab Riichi</h1>
       </div>
       <div className="flex flex-row gap-4">
-        <Menu></Menu>
+        <Menu>
+          <MenuButton>USERNAME</MenuButton>
+          <MenuItems anchor="bottom"></MenuItems>
+        </Menu>
         <div
           onClick={() => setIsModalOpen(true)}
           className="border border-white rounded-lg p-1"

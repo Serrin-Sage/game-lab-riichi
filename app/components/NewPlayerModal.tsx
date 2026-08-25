@@ -1,6 +1,7 @@
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { ChangeEvent, FormEvent, useState } from "react";
 import supabase from "../lib/subabase/supabase-client";
+import { colorList } from "../profile/utils";
 
 interface NewPlayerModalProps {
   isModalOpen: boolean;
@@ -12,7 +13,7 @@ export const NewPlayerModal = ({
   setIsModalOpen,
 }: NewPlayerModalProps) => {
   const [newUsername, setNewUserName] = useState("");
-  const [colorSelection, setColorSelection] = useState("");
+  const [colorSelection, setColorSelection] = useState("#DB3514");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
@@ -25,6 +26,7 @@ export const NewPlayerModal = ({
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    setIsSubmitting(true);
     const newUserData = {
       name: newUsername,
       color: colorSelection,
@@ -38,15 +40,18 @@ export const NewPlayerModal = ({
       .single();
 
     if (error) {
+      setError(error.toJSON.toString());
       console.log("Error adding user:", error);
     } else {
+      setIsModalOpen(false);
+      setIsSubmitting(false);
       console.log(data);
     }
   };
   return (
     <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)}>
       <div className="fixed inset-0 bg-black/50 flex w-screen items-center justify-center p-4">
-        <DialogPanel className="w-75 h-38 border-white border flex p-4 items-center flex-col bg-mahjong-red text-white rounded-[10px] justify-between">
+        <DialogPanel className="w-75 h-48 border-white border flex p-4 items-center flex-col bg-mahjong-red text-white rounded-[10px] justify-between">
           <DialogTitle className={`text-[26px]`}>Create a new user</DialogTitle>
           <form onSubmit={handleSubmit}>
             <input
@@ -57,6 +62,18 @@ export const NewPlayerModal = ({
               value={newUsername}
               onChange={(e) => handleOnChange(e)}
             />
+            <div className="flex gap-1.5 flex-wrap justify-center w-50">
+              {colorList.map((color, index) => {
+                return (
+                  <div
+                    key={index}
+                    className={`cursor-pointer border-2 size-7 rounded-full ${colorSelection === color ? "border-white" : "border-gray-400"}`}
+                    style={{ backgroundColor: color }}
+                    onClick={() => setColorSelection(color)}
+                  />
+                );
+              })}
+            </div>
             <button type="submit" disabled={isSubmitting}>
               {isSubmitting ? "Creating..." : "Done"}
             </button>
