@@ -1,4 +1,5 @@
-import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
+import { Combobox, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
+import { UserListDropdown } from "./UserListDropdown";
 
 interface GameFormProps {
   isModalOpen: boolean;
@@ -9,23 +10,25 @@ export const GameForm = ({ isModalOpen, setIsModalOpen }: GameFormProps) => {
   return (
     <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)}>
       <div className="fixed inset-0 bg-black/50 flex w-screen items-center justify-center p-4">
-        <DialogPanel className={`w-75 h-48 border-white border text-white`}>
+        <DialogPanel
+          className={`w-75 h-68 border-white border flex p-4 items-center flex-col bg-mahjong-red text-white rounded-[10px]`}
+        >
           <DialogTitle>Game Form</DialogTitle>
-          <div>
-            <div>
-              <input placeholder="Player 1" type="text" />
+          <div className="flex gap-4 flex-col">
+            <div className="flex">
+              <UserListDropdown />
               <input placeholder="final score" type="number" />
             </div>
             <div>
-              <input placeholder="Player 2" />
+              <UserListDropdown />
               <input placeholder="final score" type="number" />
             </div>
             <div>
-              <input placeholder="Player 3" />
+              <UserListDropdown />
               <input placeholder="final score" type="number" />
             </div>
             <div>
-              <input placeholder="Player 4" />
+              <UserListDropdown />
               <input placeholder="final score" type="number" />
             </div>
           </div>
