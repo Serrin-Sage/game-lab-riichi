@@ -1,16 +1,11 @@
 "use client";
 
-import { Profile } from "../lib/types";
 import { GameForm } from "./GameForm";
 import { useState } from "react";
+import { useAppContext } from "../context/AppContext";
 
-interface HomePageProps {
-  userList: Profile[];
-  isLoading: boolean;
-  isError: boolean;
-}
-
-export const HomePage = ({ userList, isLoading, isError }: HomePageProps) => {
+export const HomePage = () => {
+  const { userList, isLoading, isError } = useAppContext();
   const [isGameFormModalOpen, setIsGameFormModalOpen] = useState(false);
   return (
     <div className="profile-welcome content-wrap text-white" id="top">

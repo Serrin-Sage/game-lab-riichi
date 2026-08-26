@@ -1,5 +1,6 @@
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { ChangeEvent, FormEvent, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import supabase from "../lib/subabase/supabase-client";
 import { colorList } from "../profile/utils";
 
@@ -12,6 +13,7 @@ export const NewPlayerModal = ({
   isModalOpen,
   setIsModalOpen,
 }: NewPlayerModalProps) => {
+  const queryClient = useQueryClient();
   const [newUsername, setNewUserName] = useState("");
   const [colorSelection, setColorSelection] = useState("#DB3514");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -43,6 +45,7 @@ export const NewPlayerModal = ({
       setError(error.toJSON.toString());
       console.log("Error adding user:", error);
     } else {
+      await queryClient.invalidateQueries({ queryKey: ["users"] });
       setIsModalOpen(false);
       setIsSubmitting(false);
       console.log(data);
