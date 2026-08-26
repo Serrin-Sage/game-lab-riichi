@@ -9,7 +9,8 @@ import { useState } from "react";
 import { Profile } from "@prisma/client";
 
 export const UserListDropdown = () => {
-  const { selectedProfile, setSelectedProfile, userList } = useAppContext();
+  const { userList } = useAppContext();
+  const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const filteredProfile =
     searchQuery === ""

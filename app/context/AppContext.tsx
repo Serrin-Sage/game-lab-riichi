@@ -20,8 +20,8 @@ type AppContextValue = {
   scoreResults: ScoreResult[];
   setScoreResults: Dispatch<SetStateAction<ScoreResult[]>>;
   addGame: (game: Game) => void;
-  selectedProfile: Profile;
-  setSelectedProfile: (profile: Profile) => void;
+  selectedOverviewProfile: Profile | null;
+  setSelectedOverviewProfile: (profile: Profile) => void;
 };
 
 const AppContext = createContext<AppContextValue | undefined>(undefined);
@@ -29,7 +29,8 @@ const AppContext = createContext<AppContextValue | undefined>(undefined);
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const [games, setGames] = useState<Game[]>([]);
   const [scoreResults, setScoreResults] = useState<ScoreResult[]>([]);
-  const [selectedProfile, setSelectedProfile] = useState<Profile>({});
+  const [selectedOverviewProfile, setSelectedOverviewProfile] =
+    useState<Profile | null>(null);
   const {
     data: userList = [],
     isLoading,
@@ -53,8 +54,8 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
         scoreResults,
         setScoreResults,
         addGame,
-        selectedProfile,
-        setSelectedProfile,
+        selectedOverviewProfile,
+        setSelectedOverviewProfile,
       }}
     >
       {children}

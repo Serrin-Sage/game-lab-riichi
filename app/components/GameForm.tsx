@@ -1,4 +1,4 @@
-import { Combobox, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
+import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { UserListDropdown } from "./UserListDropdown";
 
 interface GameFormProps {
