@@ -4,9 +4,9 @@ import {
   ComboboxOption,
   ComboboxOptions,
 } from "@headlessui/react";
-import { useAppContext } from "../context/AppContext";
+import { useAppContext } from "../../context/AppContext";
 import { useState } from "react";
-import type { Profile } from "../lib/types";
+import type { Profile } from "../../lib/types";
 
 interface UserListDropdownProps {
   value: Profile | null;

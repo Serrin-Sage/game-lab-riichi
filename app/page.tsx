@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Header } from "./components/Header";
-import { HomePage } from "./components/HomePage";
-import { NewPlayerModal } from "./components/NewPlayerModal";
+import { Header } from "./components/layout/Header";
+import { HomePage } from "./components/home/HomePage";
+import { NewPlayerModal } from "./components/players/NewPlayerModal";
 
 const Home = () => {
   const [isNewPlayerModalOpen, setIsNewPlayerModalOpen] = useState(false);

@@ -1,8 +1,8 @@
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import supabase from "../lib/subabase/supabase-client";
-import { colorList } from "../profile/utils";
+import supabase from "../../lib/subabase/supabase-client";
+import { colorList } from "../../lib/profiles";
 
 interface NewPlayerModalProps {
   isModalOpen: boolean;

@@ -1,11 +1,11 @@
 "use client";
 
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import { UserListDropdown } from "./UserListDropdown";
+import { UserListDropdown } from "../players/UserListDropdown";
 import { useState, type SubmitEvent, type ChangeEvent } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import type { Profile, GameMode, ScoreInput } from "../lib/types";
-import { submitGame } from "../actions/games";
+import type { Profile, GameMode, ScoreInput } from "../../lib/types";
+import { submitGame } from "../../lib/games";
 
 interface GameFormProps {
   isModalOpen: boolean;

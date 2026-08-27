@@ -1,8 +1,8 @@
 "use client";
 
-import { GameForm } from "./GameForm";
+import { GameForm } from "../games/GameForm";
 import { useState } from "react";
-import { useAppContext } from "../context/AppContext";
+import { useAppContext } from "../../context/AppContext";
 
 export const HomePage = () => {
   const { isLoading, isError, gamesList } = useAppContext();

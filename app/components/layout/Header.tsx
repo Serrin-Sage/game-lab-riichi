@@ -1,7 +1,5 @@
 "use client";
 
-import { Menu, MenuButton, MenuItems } from "@headlessui/react";
-
 interface HeaderProps {
   setIsModalOpen: (val: boolean) => void;
 }

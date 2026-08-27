@@ -1,6 +1,6 @@
-import supabase from "../lib/subabase/supabase-client";
-import { calculateScoreResults } from "../lib/scoring";
-import type { GameMode, ScoreInput, StoredGame } from "../lib/types";
+import supabase from "./subabase/supabase-client";
+import { calculateScoreResults } from "./scoring";
+import type { GameMode, ScoreInput, StoredGame } from "./types";
 
 export const submitGame = async (mode: GameMode, inputs: ScoreInput[]) => {
   const results = calculateScoreResults(mode, inputs);

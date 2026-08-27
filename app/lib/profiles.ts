@@ -1,5 +1,5 @@
-import supabase from "../lib/subabase/supabase-client";
-import { Profile } from "../lib/types";
+import supabase from "./subabase/supabase-client";
+import { Profile } from "./types";
 
 export const fetchUsers = async (): Promise<Profile[]> => {
   const { data, error } = await supabase.from("Users").select("*");

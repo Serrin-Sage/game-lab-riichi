@@ -9,9 +9,9 @@ import {
   type SetStateAction,
 } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchUsers } from "../profile/utils";
+import { fetchUsers } from "../lib/profiles";
 import type { Game, Profile, ScoreResult, StoredGame } from "../lib/types";
-import { fetchGames } from "../actions/games";
+import { fetchGames } from "../lib/games";
 
 type AppContextValue = {
   userList: Profile[];
