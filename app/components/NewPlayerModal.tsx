@@ -60,7 +60,7 @@ export const NewPlayerModal = ({
     <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)}>
       <div className="fixed inset-0 bg-black/50 flex w-screen items-center justify-center p-4">
         <DialogPanel className="w-70 h-58 border-white border flex p-4 items-center flex-col bg-mahjong-red text-white rounded-[10px] justify-between">
-          <DialogTitle className={`text-[26px]`}>Create a new user</DialogTitle>
+          <DialogTitle className={`text-[26px]`}>Add player</DialogTitle>
           <form onSubmit={handleSubmit} className="flex flex-col gap-3">
             <input
               name="username"

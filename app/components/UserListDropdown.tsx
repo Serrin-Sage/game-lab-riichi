@@ -43,15 +43,18 @@ export const UserListDropdown = ({
         aria-label="Player"
         displayValue={(user: Profile) => user?.name}
         onChange={(event) => setSearchQuery(event.target.value)}
-        className={`border border-[#928989] rounded-sm w-37.5`}
+        className={`border border-[#928989] rounded-sm w-37.5 pl-1.25 py-1.25`}
         placeholder={placeholderText}
       />
-      <ComboboxOptions anchor="bottom" className="bg-mahjong-red w-fit">
+      <ComboboxOptions
+        anchor="bottom"
+        className="bg-[#630710] w-37.5 border-[#928989] border rounded-sm text-white max-h-[50px] overflow-auto"
+      >
         {availableProfiles.map((profile) => (
           <ComboboxOption
             key={profile.id}
             value={profile}
-            className="cursor-pointer"
+            className="cursor-pointer pl-1.25 hover:bg-[#7c0a15] py-1.25"
           >
             {profile.name}
           </ComboboxOption>
