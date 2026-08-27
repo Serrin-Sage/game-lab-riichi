@@ -25,6 +25,8 @@ export const NewPlayerModal = ({
     setNewUserName(e.target.value);
   };
 
+  const isFormDisabled = isSubmitting || newUsername === "";
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -32,6 +34,8 @@ export const NewPlayerModal = ({
     const newUserData = {
       name: newUsername,
       color: colorSelection,
+      games_played: 0,
+      average_score: 0,
       gameHistory: [],
       rank: 0,
     };
@@ -42,21 +46,22 @@ export const NewPlayerModal = ({
       .single();
 
     if (error) {
-      setError(error.toJSON.toString());
+      setError(error.toString());
       console.log("Error adding user:", error);
     } else {
       await queryClient.invalidateQueries({ queryKey: ["users"] });
       setIsModalOpen(false);
       setIsSubmitting(false);
+      setNewUserName("");
       console.log(data);
     }
   };
   return (
     <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)}>
       <div className="fixed inset-0 bg-black/50 flex w-screen items-center justify-center p-4">
-        <DialogPanel className="w-75 h-48 border-white border flex p-4 items-center flex-col bg-mahjong-red text-white rounded-[10px] justify-between">
+        <DialogPanel className="w-70 h-58 border-white border flex p-4 items-center flex-col bg-mahjong-red text-white rounded-[10px] justify-between">
           <DialogTitle className={`text-[26px]`}>Create a new user</DialogTitle>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-3">
             <input
               name="username"
               placeholder="type new username"
@@ -77,9 +82,15 @@ export const NewPlayerModal = ({
                 );
               })}
             </div>
-            <button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Creating..." : "Done"}
-            </button>
+            <div className="w-full">
+              <button
+                type="submit"
+                disabled={isFormDisabled}
+                className={`${isFormDisabled ? "opacity-50 cursor-default" : "cursor-pointer"} float-right border border-white rounded-sm w-12.5`}
+              >
+                {isSubmitting ? "Creating..." : "Done"}
+              </button>
+            </div>
             {error && <p role="alert">{error}</p>}
           </form>
         </DialogPanel>

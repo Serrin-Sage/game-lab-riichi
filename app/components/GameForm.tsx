@@ -1,5 +1,10 @@
+"use client";
+
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { UserListDropdown } from "./UserListDropdown";
+import { useState, type SubmitEvent, type ChangeEvent } from "react";
+import type { Profile, GameMode, ScoreInput } from "../lib/types";
+import { submitGame } from "../actions/games";
 
 interface GameFormProps {
   isModalOpen: boolean;
@@ -7,31 +12,123 @@ interface GameFormProps {
 }
 
 export const GameForm = ({ isModalOpen, setIsModalOpen }: GameFormProps) => {
+  const [mode, setMode] = useState<GameMode>("4P");
+  const [players, setPlayers] = useState<(Profile | null)[]>([
+    null,
+    null,
+    null,
+    null,
+  ]);
+  const [scores, setScores] = useState(["", "", "", ""]);
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [totalScore, setTotalScore] = useState(0);
+  const playerCount = mode === "4P" ? 4 : 3;
+
+  const updateMode = (nextMode: GameMode) => {
+    setMode(nextMode);
+  };
+
+  const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setError("");
+
+    const inputs: ScoreInput[] = players
+      .slice(0, playerCount)
+      .map((profile, index) => ({
+        profileId: profile?.id ?? "",
+        score: Number(scores[index]),
+      }));
+
+    try {
+      setIsSubmitting(true);
+      await submitGame(mode, inputs);
+      setIsSubmitting(false);
+      setIsModalOpen(false);
+    } catch (submissionError) {
+      setIsSubmitting(false);
+      setError(
+        submissionError instanceof Error
+          ? submissionError.message
+          : "Unable to submit game.",
+      );
+    }
+  };
+
+  const handleScoreInput = (
+    event: ChangeEvent<HTMLInputElement, HTMLInputElement>,
+    index: number,
+  ) => {
+    setScores((currentScores) =>
+      currentScores.map((score, scoreIndex) =>
+        scoreIndex === index ? event.target.value : score,
+      ),
+    );
+  };
+
+  const isScoreTotaled = () => {
+    if (playerCount === 4 && totalScore === 120000) return true;
+    if (playerCount === 3 && totalScore === 105000) return true;
+  };
+
   return (
     <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)}>
       <div className="fixed inset-0 bg-black/50 flex w-screen items-center justify-center p-4">
         <DialogPanel
-          className={`w-75 h-68 border-white border flex p-4 items-center flex-col bg-mahjong-red text-white rounded-[10px]`}
+          className={`w-85 h-78 border-white border flex p-4 items-center flex-col bg-mahjong-red text-white rounded-[10px]`}
         >
-          <DialogTitle>Game Form</DialogTitle>
-          <div className="flex gap-4 flex-col">
-            <div className="flex">
-              <UserListDropdown />
-              <input placeholder="final score" type="number" />
-            </div>
+          <DialogTitle className={`text-[26px]`}>Game Form</DialogTitle>
+          <form onSubmit={handleSubmit} className="flex gap-4 flex-col">
+            <select
+              value={mode}
+              onChange={(event) => updateMode(event.target.value as GameMode)}
+            >
+              <option value="4P">4 player</option>
+              <option value="3P">3 player</option>
+            </select>
+            {players.slice(0, playerCount).map((player, index) => {
+              const selectedIds = players
+                .filter((profile): profile is Profile => profile !== null)
+                .map((profile) => profile.id);
+
+              return (
+                <div className="flex gap-2" key={index}>
+                  <UserListDropdown
+                    value={player}
+                    onChange={(profile) =>
+                      setPlayers((currentPlayers) =>
+                        currentPlayers.map((currentPlayer, playerIndex) =>
+                          playerIndex === index ? profile : currentPlayer,
+                        ),
+                      )
+                    }
+                    excludedProfileIds={selectedIds}
+                    placeholderText={`Player ${index + 1}`}
+                  />
+                  <input
+                    placeholder="final score"
+                    type="number"
+                    min="0"
+                    value={scores[index]}
+                    onChange={(event) => handleScoreInput(event, index)}
+                    className="border border-[#928989] rounded-sm w-37.5"
+                  />
+                </div>
+              );
+            })}
             <div>
-              <UserListDropdown />
-              <input placeholder="final score" type="number" />
+              <span>
+                Total Score:{" "}
+                <span className={`${isScoreTotaled() ? "text-green-400" : ""}`}>
+                  {totalScore}
+                </span>
+              </span>
             </div>
-            <div>
-              <UserListDropdown />
-              <input placeholder="final score" type="number" />
-            </div>
-            <div>
-              <UserListDropdown />
-              <input placeholder="final score" type="number" />
-            </div>
-          </div>
+            {error && <p role="alert">{error}</p>}
+            <button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Submitting..." : "Submit game"}
+            </button>
+          </form>
         </DialogPanel>
       </div>
     </Dialog>

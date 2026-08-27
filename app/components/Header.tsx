@@ -12,13 +12,9 @@ export const Header = ({ setIsModalOpen }: HeaderProps) => {
         <h1>Game Lab Riichi</h1>
       </div>
       <div className="flex flex-row gap-4">
-        <Menu>
-          <MenuButton>USERNAME</MenuButton>
-          <MenuItems anchor="bottom"></MenuItems>
-        </Menu>
         <div
           onClick={() => setIsModalOpen(true)}
-          className="border border-white rounded-lg p-1"
+          className="border border-white rounded-lg p-1 cursor-pointer"
         >
           + New Player
         </div>
