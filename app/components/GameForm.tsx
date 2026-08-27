@@ -3,6 +3,7 @@
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { UserListDropdown } from "./UserListDropdown";
 import { useState, type SubmitEvent, type ChangeEvent } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import type { Profile, GameMode, ScoreInput } from "../lib/types";
 import { submitGame } from "../actions/games";
 
@@ -12,6 +13,7 @@ interface GameFormProps {
 }
 
 export const GameForm = ({ isModalOpen, setIsModalOpen }: GameFormProps) => {
+  const queryClient = useQueryClient();
   const [mode, setMode] = useState<GameMode>("4P");
   const [players, setPlayers] = useState<(Profile | null)[]>([
     null,
@@ -44,8 +46,8 @@ export const GameForm = ({ isModalOpen, setIsModalOpen }: GameFormProps) => {
 
     try {
       setIsSubmitting(true);
-      console.log(inputs);
       await submitGame(mode, inputs);
+      await queryClient.invalidateQueries({ queryKey: ["games"] });
       setIsSubmitting(false);
       setIsModalOpen(false);
     } catch (submissionError) {

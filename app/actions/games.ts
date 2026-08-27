@@ -1,6 +1,6 @@
 import supabase from "../lib/subabase/supabase-client";
 import { calculateScoreResults } from "../lib/scoring";
-import type { GameMode, ScoreInput } from "../lib/types";
+import type { GameMode, ScoreInput, StoredGame } from "../lib/types";
 
 export const submitGame = async (mode: GameMode, inputs: ScoreInput[]) => {
   const results = calculateScoreResults(mode, inputs);
@@ -16,12 +16,15 @@ export const submitGame = async (mode: GameMode, inputs: ScoreInput[]) => {
   return data as string;
 };
 
-export const fetchGames = async () => {
-  const { data, error } = await supabase.from("Games").select("*");
+export const fetchGames = async (): Promise<StoredGame[]> => {
+  const { data, error } = await supabase
+    .from("Games")
+    .select("*, GamePlayers(*)")
+    .order("created_at", { ascending: false });
 
   if (error) {
     throw error;
   }
 
-  return data ?? [];
+  return (data ?? []) as StoredGame[];
 };

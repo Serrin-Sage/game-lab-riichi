@@ -26,6 +26,20 @@ export type Game = {
   players: Player[];
 };
 
+export type StoredGame = {
+  id: string | number;
+  created_at: string;
+  mode: GameMode;
+  GamePlayers?: StoredGamePlayer[] | null;
+};
+
+export type StoredGamePlayer = {
+  profile_id: string;
+  score: number;
+  placement: number;
+  adjustment: number;
+};
+
 export type ScoreInput = {
   profileId: string;
   score: number;
