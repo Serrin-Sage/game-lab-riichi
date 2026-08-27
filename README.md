@@ -13,6 +13,19 @@ Profiles are public, selectable identities with generated UUIDs and unique names
 3. Copy `.env.example` to `.env` and fill in both values.
 4. Run `npm run db:generate` and `npm run db:migrate`.
 
+### Netlify deployment
+
+Add these environment variables in the Netlify site's environment settings for
+the Production deploy context:
+
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+
+Use the values from the Supabase project settings. Netlify should use the
+repository root as its base directory and `npm run build` as its build command.
+After adding or changing variables, trigger a new deploy with the build cache
+cleared.
+
 The Prisma schema stores profiles, games, raw scores, placements, and calculated adjustments. Game submission recalculates scores on the server and writes the game and its player results in one transaction.
 
 ## Getting Started
