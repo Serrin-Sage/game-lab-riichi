@@ -16,6 +16,8 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Game Lab Riichi",
   description: "A Riichi Mahjong tool for tracking game scores",
+  viewport: "cover",
+  themeColor: "#000000",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
