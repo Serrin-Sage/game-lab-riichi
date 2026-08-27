@@ -5,7 +5,8 @@ import { useState } from "react";
 import { useAppContext } from "../context/AppContext";
 
 export const HomePage = () => {
-  const { userList, isLoading, isError } = useAppContext();
+  const { userList, isLoading, isError, gamesList } = useAppContext();
+  console.log(gamesList);
   const [isGameFormModalOpen, setIsGameFormModalOpen] = useState(false);
   return (
     <div className="profile-welcome content-wrap text-white" id="top">
@@ -18,11 +19,7 @@ export const HomePage = () => {
           New Game Form
         </div>
       </div>
-      {isLoading && <p>Loading users...</p>}
-      {isError && <p>Unable to load users.</p>}
-      {!isLoading &&
-        !isError &&
-        userList.map((user) => <div key={user.id}>{user.name}</div>)}
+
       {isGameFormModalOpen && (
         <GameForm
           isModalOpen={isGameFormModalOpen}

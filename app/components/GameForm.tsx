@@ -22,8 +22,10 @@ export const GameForm = ({ isModalOpen, setIsModalOpen }: GameFormProps) => {
   const [scores, setScores] = useState(["", "", "", ""]);
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [totalScore, setTotalScore] = useState(0);
   const playerCount = mode === "4P" ? 4 : 3;
+  const totalScore = scores
+    .slice(0, playerCount)
+    .reduce((total, score) => total + (Number(score) || 0), 0);
 
   const updateMode = (nextMode: GameMode) => {
     setMode(nextMode);
@@ -42,6 +44,7 @@ export const GameForm = ({ isModalOpen, setIsModalOpen }: GameFormProps) => {
 
     try {
       setIsSubmitting(true);
+      console.log(inputs);
       await submitGame(mode, inputs);
       setIsSubmitting(false);
       setIsModalOpen(false);
@@ -75,7 +78,7 @@ export const GameForm = ({ isModalOpen, setIsModalOpen }: GameFormProps) => {
     <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)}>
       <div className="fixed inset-0 bg-black/50 flex w-screen items-center justify-center p-4">
         <DialogPanel
-          className={`w-85 h-78 border-white border flex p-4 items-center flex-col bg-mahjong-red text-white rounded-[10px]`}
+          className={`w-85 border-white border flex p-4 items-center flex-col bg-mahjong-red text-white rounded-[10px]`}
         >
           <DialogTitle className={`text-[26px]`}>Game Form</DialogTitle>
           <form onSubmit={handleSubmit} className="flex gap-4 flex-col">

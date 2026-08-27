@@ -11,9 +11,11 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { fetchUsers } from "../profile/utils";
 import type { Game, Profile, ScoreResult } from "../lib/types";
+import { fetchGames } from "../actions/games";
 
 type AppContextValue = {
   userList: Profile[];
+  gamesList: Game[];
   isLoading: boolean;
   isError: boolean;
   games: Game[];
@@ -40,6 +42,15 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     queryFn: fetchUsers,
   });
 
+  const {
+    data: gamesList = [],
+    isGameListLoading,
+    isGameListError,
+  } = useQuery({
+    queryKey: ["games"],
+    queryFn: fetchGames,
+  });
+
   const addGame = (game: Game) => {
     setGames((currentGames) => [...currentGames, game]);
   };
@@ -48,6 +59,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     <AppContext.Provider
       value={{
         userList,
+        gamesList,
         isLoading,
         isError,
         games,
