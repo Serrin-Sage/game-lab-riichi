@@ -1,4 +1,5 @@
 import { useAppContext } from "@/app/context/AppContext";
+import { PlacementBadge } from "../games/PlacementBadge";
 
 export const GameHistory = () => {
   const { gamesList } = useAppContext();
@@ -19,27 +20,29 @@ export const GameHistory = () => {
           <div className="grid gap-2 pt-3">
             {game.players.map((player) => (
               <div
-                className="grid grid-cols-[minmax(0,1fr)_auto_auto_auto] items-center gap-2 sm:gap-3"
+                className="grid grid-cols-[minmax(0,1fr)_3rem_3rem] items-center gap-2 sm:gap-3"
                 key={`${game.id}-${player.id}`}
               >
-                <span className="flex min-w-0 items-center gap-1 truncate text-[18px]">
-                  <span
-                    aria-hidden="true"
-                    className="h-3 w-3 shrink-0 rounded-full"
-                    style={{ backgroundColor: player.color }}
-                  />
-                  {player.name}
-                </span>
-                <div className="flex gap-2">
-                  <span>#{player.placement}</span>
-                  <span>{player.score.toLocaleString()}</span>
-                  <span
-                    className={`${(player.adjustment ?? 0) > 0 ? "text-green-400" : "text-red-600"}`}
-                  >
-                    {(player.adjustment ?? 0) > 0 ? "+" : ""}
-                    {player.adjustment ?? 0}
-                  </span>
+                <div className="flex gap-4 items-center">
+                  <div className="flex min-w-0 items-center gap-1 truncate text-[18px]">
+                    <span
+                      aria-hidden="true"
+                      className="h-3 w-3 shrink-0 rounded-full"
+                      style={{ backgroundColor: player.color }}
+                    />
+                    {player.name}
+                  </div>
+                  <PlacementBadge placement={player.placement} />
                 </div>
+                <span className="text-left tabular-nums">
+                  {player.score.toLocaleString()}
+                </span>
+                <span
+                  className={`${(player.adjustment ?? 0) > 0 ? "text-green-400" : "text-red-600"} tabular-nums`}
+                >
+                  {(player.adjustment ?? 0) > 0 ? "+" : ""}
+                  {player.adjustment ?? 0}
+                </span>
               </div>
             ))}
           </div>
