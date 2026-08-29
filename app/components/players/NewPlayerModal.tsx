@@ -3,6 +3,7 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import supabase from "../../lib/subabase/supabase-client";
 import { colorList } from "../../lib/profiles";
+import { ToastContainer, toast } from "react-toastify";
 
 interface NewPlayerModalProps {
   isModalOpen: boolean;
@@ -18,6 +19,7 @@ export const NewPlayerModal = ({
   const [colorSelection, setColorSelection] = useState("#DB3514");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const notify = () => toast.success(`New Player Added: ${newUsername}`);
 
   const handleOnChange = (
     e: ChangeEvent<HTMLInputElement, HTMLInputElement>,
@@ -49,10 +51,11 @@ export const NewPlayerModal = ({
       setError(error.toString());
       console.log("Error adding user:", error);
     } else {
-      await queryClient.invalidateQueries({ queryKey: ["users"] });
+      // await queryClient.invalidateQueries({ queryKey: ["users"] });
       setIsModalOpen(false);
       setIsSubmitting(false);
       setNewUserName("");
+      notify();
       console.log(data);
     }
   };

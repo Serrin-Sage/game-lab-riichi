@@ -4,6 +4,7 @@ import { GameForm } from "../games/GameForm";
 import { useState } from "react";
 import { useAppContext } from "../../context/AppContext";
 import { GameHistory } from "./GameHistory";
+import { ToastContainer } from "react-toastify";
 
 export const HomePage = () => {
   const { isLoading, isError, gamesList } = useAppContext();
@@ -39,6 +40,7 @@ export const HomePage = () => {
           setIsModalOpen={setIsGameFormModalOpen}
         />
       )}
+      <ToastContainer />
     </div>
   );
 };
