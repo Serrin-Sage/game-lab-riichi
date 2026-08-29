@@ -3,7 +3,7 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import supabase from "../../lib/subabase/supabase-client";
 import { colorList } from "../../lib/profiles";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 interface NewPlayerModalProps {
   isModalOpen: boolean;
@@ -51,7 +51,7 @@ export const NewPlayerModal = ({
       setError(error.toString());
       console.log("Error adding user:", error);
     } else {
-      // await queryClient.invalidateQueries({ queryKey: ["users"] });
+      await queryClient.invalidateQueries({ queryKey: ["users"] });
       setIsModalOpen(false);
       setIsSubmitting(false);
       setNewUserName("");
