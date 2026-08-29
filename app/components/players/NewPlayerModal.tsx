@@ -1,5 +1,5 @@
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, SubmitEvent, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import supabase from "../../lib/subabase/supabase-client";
 import { colorList } from "../../lib/profiles";
@@ -19,7 +19,9 @@ export const NewPlayerModal = ({
   const [colorSelection, setColorSelection] = useState("#DB3514");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
-  const notify = () => toast.success(`New Player Added: ${newUsername}`);
+  const notifySuccess = () => toast.success(`New Player Added: ${newUsername}`);
+  const notifyError = (errorMessage: string) =>
+    toast.error(`Failed to add user: ${errorMessage}`);
 
   const handleOnChange = (
     e: ChangeEvent<HTMLInputElement, HTMLInputElement>,
@@ -29,7 +31,7 @@ export const NewPlayerModal = ({
 
   const isFormDisabled = isSubmitting || newUsername === "";
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     setIsSubmitting(true);
@@ -48,14 +50,19 @@ export const NewPlayerModal = ({
       .single();
 
     if (error) {
-      setError(error.toString());
+      setError(error.message);
+      setIsModalOpen(false);
+      setIsSubmitting(false);
+      setNewUserName("");
+      notifyError(error.message);
       console.log("Error adding user:", error);
     } else {
       await queryClient.invalidateQueries({ queryKey: ["users"] });
       setIsModalOpen(false);
       setIsSubmitting(false);
       setNewUserName("");
-      notify();
+      setError("");
+      notifySuccess();
       console.log(data);
     }
   };

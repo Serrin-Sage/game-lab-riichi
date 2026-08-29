@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers/Providers";
@@ -16,8 +16,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Game Lab Riichi",
   description: "A Riichi Mahjong tool for tracking game scores",
-  viewport: "cover",
-  themeColor: "#000000",
+};
+
+export const viewport: Viewport = {
+  themeColor: "black",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
