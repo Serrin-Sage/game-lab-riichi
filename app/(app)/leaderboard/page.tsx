@@ -51,40 +51,41 @@ export default function LeaderboardPage() {
       )}
       {!isLoading && !isError && leaderboardRows.length > 0 && (
         <div className="overflow-x-auto">
-          <table className="w-full border-separate border-spacing-y-2 text-left text-sm sm:text-base">
+          <table className="w-full border-separate border-spacing-y-0 text-left text-sm sm:text-base">
             <thead className="">
               <tr className="text-mahjong-gold  bg-mahjong-red">
                 <th className="px-3 py-2 font-semibold">Rank</th>
                 <th className="px-3 py-2 font-semibold">Name</th>
-                <th className="px-3 py-2 font-semibold text-right">
+                <th className="px-3 py-2 font-semibold text-center">
                   Total Score
                 </th>
-                <th className="px-3 py-2 font-semibold text-right">
+                <th className="px-3 py-2 font-semibold text-center">
                   # of Games
                 </th>
-                <th className="px-3 py-2 font-semibold text-right">
+                <th className="px-3 py-2 font-semibold text-center">
                   Average Score
                 </th>
               </tr>
             </thead>
             <tbody>
               {leaderboardRows.map((player, index) => (
-                <tr key={player.id} className="">
-                  <td className="rounded-l-[10px] pl-6 py-3 font-semibold">
-                    {index + 1}
-                  </td>
+                <tr
+                  key={player.id}
+                  className={`${index % 2 === 0 ? "bg-[#6d08087e]" : "bg-mahjong-red"}  `}
+                >
+                  <td className="pl-6 py-3 font-semibold">{index + 1}</td>
                   <td className=" px-3 py-3">
                     <div className="flex items-center gap-3">
                       <span>{player.name}</span>
                     </div>
                   </td>
-                  <td className="px-3 py-3 text-right tabular-nums">
+                  <td className="py-3 text-center tabular-nums">
                     {formatAdjustment(player.totalScore)}
                   </td>
-                  <td className="px-3 py-3 text-right tabular-nums">
+                  <td className=" py-3 text-center tabular-nums">
                     {player.gamesPlayed}
                   </td>
-                  <td className="rounded-r-[10px] px-3 py-3 text-right tabular-nums">
+                  <td className="px-3 py-3 text-center tabular-nums">
                     {formatAdjustment(player.averageScore)}
                   </td>
                 </tr>
