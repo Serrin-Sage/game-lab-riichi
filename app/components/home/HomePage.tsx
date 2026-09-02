@@ -4,7 +4,6 @@ import { GameForm } from "../games/GameForm";
 import { useState } from "react";
 import { useAppContext } from "../../context/AppContext";
 import { GameHistory } from "./GameHistory";
-import { ToastContainer } from "react-toastify";
 
 export const HomePage = () => {
   const { isLoading, isError, gamesList } = useAppContext();
@@ -12,16 +11,6 @@ export const HomePage = () => {
 
   return (
     <div className="profile-welcome content-wrap text-white" id="top">
-      <div className="flex justify-between p-2">
-        <h1>Welcome to GL Riichi</h1>
-        <div
-          onClick={() => setIsGameFormModalOpen(true)}
-          className="cursor-pointer"
-        >
-          New Game Form
-        </div>
-      </div>
-
       <main className="grid gap-4 p-2">
         <div className="flex justify-center">
           <h2 className="text-[28px] font-bold">Game History</h2>
@@ -40,7 +29,6 @@ export const HomePage = () => {
           setIsModalOpen={setIsGameFormModalOpen}
         />
       )}
-      <ToastContainer />
     </div>
   );
 };
