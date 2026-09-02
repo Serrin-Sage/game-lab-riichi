@@ -33,10 +33,9 @@ export default function LeaderboardPage() {
     );
 
   const formatAdjustment = (value: number) => {
-    const prefix = value > 0 ? "+" : "";
     const formatted =
       Math.abs(value) % 1 === 0 ? value.toString() : value.toFixed(1);
-    return `${prefix}${formatted}`;
+    return `${formatted}`;
   };
 
   return (
@@ -53,8 +52,8 @@ export default function LeaderboardPage() {
       {!isLoading && !isError && leaderboardRows.length > 0 && (
         <div className="overflow-x-auto">
           <table className="w-full border-separate border-spacing-y-2 text-left text-sm sm:text-base">
-            <thead>
-              <tr className="text-mahjong-gold">
+            <thead className="">
+              <tr className="text-mahjong-gold  bg-mahjong-red">
                 <th className="px-3 py-2 font-semibold">Rank</th>
                 <th className="px-3 py-2 font-semibold">Name</th>
                 <th className="px-3 py-2 font-semibold text-right">
@@ -70,30 +69,22 @@ export default function LeaderboardPage() {
             </thead>
             <tbody>
               {leaderboardRows.map((player, index) => (
-                <tr
-                  key={player.id}
-                  className="rounded-[10px] border border-mahjong-gold bg-mahjong-red"
-                >
-                  <td className="rounded-l-[10px] border-y border-l border-mahjong-gold px-3 py-3 font-semibold">
-                    #{index + 1}
+                <tr key={player.id} className="">
+                  <td className="rounded-l-[10px] pl-6 py-3 font-semibold">
+                    {index + 1}
                   </td>
-                  <td className="border-y border-mahjong-gold px-3 py-3">
+                  <td className=" px-3 py-3">
                     <div className="flex items-center gap-3">
-                      <span
-                        className="h-3 w-3 rounded-full"
-                        style={{ backgroundColor: player.color }}
-                        aria-hidden="true"
-                      />
                       <span>{player.name}</span>
                     </div>
                   </td>
-                  <td className="border-y border-mahjong-gold px-3 py-3 text-right tabular-nums">
+                  <td className="px-3 py-3 text-right tabular-nums">
                     {formatAdjustment(player.totalScore)}
                   </td>
-                  <td className="border-y border-mahjong-gold px-3 py-3 text-right tabular-nums">
+                  <td className="px-3 py-3 text-right tabular-nums">
                     {player.gamesPlayed}
                   </td>
-                  <td className="rounded-r-[10px] border-y border-r border-mahjong-gold px-3 py-3 text-right tabular-nums">
+                  <td className="rounded-r-[10px] px-3 py-3 text-right tabular-nums">
                     {formatAdjustment(player.averageScore)}
                   </td>
                 </tr>
