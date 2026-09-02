@@ -6,9 +6,9 @@ import { useState } from "react";
 import { GameForm } from "../games/GameForm";
 import { NewPlayerModal } from "../players/NewPlayerModal";
 import { Header } from "./Header";
+import { ToastContainer } from "react-toastify";
 
 const navItems = [
-  { href: "/", label: "Home" },
   { href: "/history", label: "History" },
   { href: "/leaderboard", label: "Leaderboard" },
 ];
@@ -23,8 +23,8 @@ export const AppShell = ({ children }: { children: React.ReactNode }) => {
       <Header setIsModalOpen={() => setIsNewPlayerModalOpen(true)} />
 
       <div className="profile-welcome content-wrap p-2">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <h1 className="text-2xl font-bold">Welcome to GL Riichi</h1>
+        <div className="flex gap-3 justify-between">
+          <h1 className="text-[18px] font-bold">Welcome to GL Riichi</h1>
           <button
             type="button"
             onClick={() => setIsGameFormModalOpen(true)}
@@ -66,6 +66,7 @@ export const AppShell = ({ children }: { children: React.ReactNode }) => {
         isModalOpen={isGameFormModalOpen}
         setIsModalOpen={setIsGameFormModalOpen}
       />
+      <ToastContainer />
     </main>
   );
 };
