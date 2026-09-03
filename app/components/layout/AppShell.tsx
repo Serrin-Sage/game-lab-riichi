@@ -7,6 +7,7 @@ import { GameForm } from "../games/GameForm";
 import { NewPlayerModal } from "../players/NewPlayerModal";
 import { Header } from "./Header";
 import { ToastContainer } from "react-toastify";
+import { CommonButton } from "../home/CommonButton";
 
 const navItems = [
   { href: "/history", label: "History" },
@@ -25,15 +26,12 @@ export const AppShell = ({ children }: { children: React.ReactNode }) => {
       <div className="profile-welcome content-wrap p-2">
         <div className="flex gap-3 justify-between">
           <h1 className="text-[18px] font-bold">Welcome to GL Riichi</h1>
-          <button
-            type="button"
-            onClick={() => setIsGameFormModalOpen(true)}
-            className="cursor-pointer self-start rounded-lg border border-white px-3 py-2 text-sm transition hover:bg-white/10"
-          >
-            New Game Form
-          </button>
+          <CommonButton
+            buttonText="New Game Form"
+            buttonStyle="p-2 hover:bg-zinc-800 text-[15px]"
+            buttonFunction={() => setIsGameFormModalOpen(true)}
+          />
         </div>
-
         <nav className="mt-4 flex flex-wrap gap-2">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
