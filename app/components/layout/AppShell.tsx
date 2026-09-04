@@ -12,6 +12,7 @@ import { CommonButton } from "../home/CommonButton";
 const navItems = [
   { href: "/history", label: "History" },
   { href: "/leaderboard", label: "Leaderboard" },
+  { href: "/calculator", label: "Calculator" },
 ];
 
 export const AppShell = ({ children }: { children: React.ReactNode }) => {
