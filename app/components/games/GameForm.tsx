@@ -51,6 +51,8 @@ export const GameForm = ({ isModalOpen, setIsModalOpen }: GameFormProps) => {
       await queryClient.invalidateQueries({ queryKey: ["users"] });
       setIsSubmitting(false);
       setIsModalOpen(false);
+      setPlayers([]);
+      setScores([]);
     } catch (submissionError) {
       setIsSubmitting(false);
       setError(
@@ -114,7 +116,6 @@ export const GameForm = ({ isModalOpen, setIsModalOpen }: GameFormProps) => {
                   <input
                     placeholder="final score"
                     type="number"
-                    min="0"
                     value={scores[index]}
                     onChange={(event) => handleScoreInput(event, index)}
                     className="border border-[#928989] rounded-sm w-37.5 pl-1.25"

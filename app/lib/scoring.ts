@@ -31,12 +31,9 @@ export const calculateScoreResults = (
   if (new Set(inputs.map((input) => input.profileId)).size !== inputs.length)
     throw new Error("Each player must be unique.");
   if (
-    inputs.some(
-      (input) =>
-        !input.profileId || !Number.isInteger(input.score) || input.score < 0,
-    )
+    inputs.some((input) => !input.profileId || !Number.isInteger(input.score))
   )
-    throw new Error("Scores must be non-negative whole numbers.");
+    throw new Error("Scores must be whole numbers.");
   if (inputs.reduce((total, input) => total + input.score, 0) !== rule.total)
     throw new Error(`Scores must total ${rule.total.toLocaleString()}.`);
 

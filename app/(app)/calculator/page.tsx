@@ -17,7 +17,7 @@ export default function CalculatorPage() {
   const [totalFu, setTotalFu] = useState(30);
   const [isDealer, setIsDealer] = useState(true);
   const [isTsumo, setIsTsumo] = useState(true);
-  const [scoreMessage, setScoreMessage] = useState("");
+  const [scoreMessage, setScoreMessage] = useState("500 ALL");
 
   const getScore = () => {
     const payouts = calculateBaseScore(totalHan, totalFu, isDealer, isTsumo);
