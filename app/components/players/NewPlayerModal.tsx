@@ -69,9 +69,9 @@ export const NewPlayerModal = ({
   return (
     <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)}>
       <div className="fixed inset-0 bg-black/50 flex w-screen items-center justify-center p-4">
-        <DialogPanel className="w-70 h-58 border-white border flex p-4 items-center flex-col bg-mahjong-red text-white rounded-[10px] justify-between">
+        <DialogPanel className="w-70 h-60 border-white border flex p-4 items-center flex-col bg-mahjong-red text-white rounded-[10px] justify-between">
           <DialogTitle className={`text-[26px]`}>Add player</DialogTitle>
-          <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <input
               name="username"
               placeholder="type new username"
@@ -96,7 +96,7 @@ export const NewPlayerModal = ({
               <button
                 type="submit"
                 disabled={isFormDisabled}
-                className={`${isFormDisabled ? "opacity-50 cursor-default" : "cursor-pointer"} float-right border border-white rounded-sm w-12.5`}
+                className={`${isFormDisabled ? "opacity-50 cursor-default" : "cursor-pointer"} float-right border border-white rounded-sm px-2`}
               >
                 {isSubmitting ? "Creating..." : "Done"}
               </button>

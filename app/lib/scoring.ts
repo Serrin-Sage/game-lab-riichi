@@ -50,3 +50,46 @@ export const calculateScoreResults = (
       (index === 0 ? rule.oka : 0),
   }));
 };
+
+export const calculateBaseScore = (
+  han: number,
+  fu: number,
+  isDealer: boolean,
+  isTsumo: boolean,
+) => {
+  let baseScore: number;
+  let ronPayout = 0;
+  let tsumoDealerPayout = 0;
+  let tsumoNonDealerPayout = 0;
+
+  if (han >= 13) {
+    baseScore = 8000;
+  } else if (han >= 11) {
+    baseScore = 6000;
+  } else if (han >= 8) {
+    baseScore = 4000;
+  } else if (han >= 6) {
+    baseScore = 3000;
+  } else if (han >= 5 || (han === 4 && fu >= 40) || (han === 3 && fu >= 70)) {
+    baseScore = 2000;
+  } else {
+    baseScore = fu * 2 ** (2 + han);
+  }
+
+  if (!isDealer && isTsumo) {
+    tsumoDealerPayout = Math.ceil((baseScore * 2) / 100) * 100;
+    tsumoNonDealerPayout = Math.ceil(baseScore / 100) * 100;
+  } else if (!isDealer && !isTsumo) {
+    ronPayout = Math.ceil((baseScore * 4) / 100) * 100;
+  } else if (isDealer && isTsumo) {
+    tsumoDealerPayout = Math.ceil((baseScore * 2) / 100) * 100;
+  } else if (isDealer && !isTsumo) {
+    ronPayout = Math.ceil((baseScore * 6) / 100) * 100;
+  }
+
+  return {
+    ronPayout,
+    tsumoDealerPayout,
+    tsumoNonDealerPayout,
+  };
+};
