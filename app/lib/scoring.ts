@@ -58,9 +58,10 @@ export const calculateBaseScore = (
   isTsumo: boolean,
 ) => {
   let baseScore: number;
-  let dealerPayout = 0;
-  let nonDealerPayout = 0;
-  let allPayout = 0;
+  let ronPayout = 0;
+  let tsumoDealerPayout = 0;
+  let tsumoNonDealerPayout = 0;
+
   if (han >= 13) {
     baseScore = 8000;
   } else if (han >= 11) {
@@ -69,28 +70,26 @@ export const calculateBaseScore = (
     baseScore = 4000;
   } else if (han >= 6) {
     baseScore = 3000;
-  } else if (han >= 5) {
+  } else if (han >= 5 || (han === 4 && fu >= 40) || (han === 3 && fu >= 70)) {
     baseScore = 2000;
   } else {
-    baseScore = Math.ceil((fu * 2 ** (2 + han)) / 100) * 100;
+    baseScore = fu * 2 ** (2 + han);
   }
 
   if (!isDealer && isTsumo) {
-    dealerPayout = baseScore * 2;
-    nonDealerPayout = baseScore;
+    tsumoDealerPayout = Math.ceil((baseScore * 2) / 100) * 100;
+    tsumoNonDealerPayout = Math.ceil(baseScore / 100) * 100;
   } else if (!isDealer && !isTsumo) {
-    allPayout = baseScore * 4;
+    ronPayout = Math.ceil((baseScore * 4) / 100) * 100;
   } else if (isDealer && isTsumo) {
-    allPayout = baseScore * 2;
+    tsumoDealerPayout = Math.ceil((baseScore * 2) / 100) * 100;
   } else if (isDealer && !isTsumo) {
-    nonDealerPayout = baseScore * 6;
+    ronPayout = Math.ceil((baseScore * 6) / 100) * 100;
   }
 
-  console.log(han, fu, dealerPayout, nonDealerPayout, allPayout);
-
   return {
-    dealerPayout: dealerPayout,
-    nonDealerPayout: nonDealerPayout,
-    allPayout: allPayout,
+    ronPayout,
+    tsumoDealerPayout,
+    tsumoNonDealerPayout,
   };
 };

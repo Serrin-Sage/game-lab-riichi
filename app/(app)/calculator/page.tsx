@@ -3,10 +3,6 @@
 import { calculateBaseScore } from "@/app/lib/scoring";
 import { FU_COUNT, HAN_COUNT } from "@/app/lib/types";
 import {
-  Combobox,
-  ComboboxInput,
-  ComboboxOption,
-  ComboboxOptions,
   Listbox,
   ListboxButton,
   ListboxOption,
@@ -14,21 +10,31 @@ import {
 } from "@headlessui/react";
 import Image from "next/image";
 import { useState } from "react";
+import { CommonButton } from "@/app/components/home/CommonButton";
 
 export default function CalculatorPage() {
-  const [totalHan, setTotalHan] = useState(0);
-  const [totalFu, setTotalFu] = useState(0);
+  const [totalHan, setTotalHan] = useState(1);
+  const [totalFu, setTotalFu] = useState(30);
   const [isDealer, setIsDealer] = useState(true);
   const [isTsumo, setIsTsumo] = useState(true);
-  const [score, setScore] = useState(0);
+  const [scoreMessage, setScoreMessage] = useState("");
 
   const getScore = () => {
     const payouts = calculateBaseScore(totalHan, totalFu, isDealer, isTsumo);
-    console.log(payouts);
+    if (!isTsumo) {
+      setScoreMessage(`${payouts.ronPayout}`);
+    } else if (isDealer) {
+      setScoreMessage(`${payouts.tsumoDealerPayout} ALL`);
+    } else {
+      setScoreMessage(
+        `${payouts.tsumoDealerPayout} - ${payouts.tsumoNonDealerPayout}`,
+      );
+    }
   };
 
   return (
-    <div className="text-white flex-col w-full flex items-center justify-center gap-4">
+    <main className="text-white flex-col w-full flex items-center justify-center gap-4 p-2">
+      <h2 className="text-[28px] font-bold">Score Calculator</h2>
       <div className="flex items-center gap-4">
         <div className="text-center text-[18px] font-semibold">
           <h2>Dealer</h2>
@@ -50,13 +56,13 @@ export default function CalculatorPage() {
         </div>
         <div className="flex flex-col text-xl h-10 gap-2 ">
           <div
-            className={`${isTsumo ? "bg-amber-500" : "bg-zinc-500"} rounded-lg text-center px-2`}
+            className={`${isTsumo ? "bg-amber-500" : "bg-zinc-500"} rounded-lg text-center px-2 cursor-pointer`}
             onClick={() => setIsTsumo(true)}
           >
             Tsumo
           </div>
           <div
-            className={`${!isTsumo ? "bg-amber-500" : "bg-zinc-500"} rounded-lg text-center px-2`}
+            className={`${!isTsumo ? "bg-amber-500" : "bg-zinc-500"} rounded-lg text-center px-2 cursor-pointer`}
             onClick={() => setIsTsumo(false)}
           >
             Ron
@@ -64,7 +70,7 @@ export default function CalculatorPage() {
         </div>
       </div>
       <div className="flex gap-3">
-        <div>
+        <div className="text-center text-[18px] font-semibold">
           <h1>Han</h1>
           <Listbox value={totalHan} onChange={setTotalHan}>
             <ListboxButton className="bg-mahjong-red cursor-pointer w-18.5 rounded-[10px] h-24 px-1 py-4 text-4xl flex items-center justify-center">
@@ -78,7 +84,7 @@ export default function CalculatorPage() {
                 <ListboxOption
                   key={`${han}-${index}`}
                   value={han}
-                  className="py-2"
+                  className="py-2 cursor-pointer"
                 >
                   {han}
                 </ListboxOption>
@@ -86,10 +92,10 @@ export default function CalculatorPage() {
             </ListboxOptions>
           </Listbox>
         </div>
-        <div>
+        <div className="text-center text-[18px] font-semibold">
           <h1>Fu</h1>
           <Listbox value={totalFu} onChange={setTotalFu}>
-            <ListboxButton className="bg-mahjong-red w-18.5 rounded-[10px] h-24 px-1 py-4 text-4xl flex items-center justify-center">
+            <ListboxButton className="bg-mahjong-red cursor-pointer w-18.5 rounded-[10px] h-24 px-1 py-4 text-4xl flex items-center justify-center">
               {totalFu}
             </ListboxButton>
             <ListboxOptions
@@ -100,7 +106,7 @@ export default function CalculatorPage() {
                 <ListboxOption
                   key={`${fu}-${index}`}
                   value={fu}
-                  className="py-2"
+                  className="py-2 cursor-pointer"
                 >
                   {fu}
                 </ListboxOption>
@@ -109,8 +115,15 @@ export default function CalculatorPage() {
           </Listbox>
         </div>
       </div>
-      <div>{score}</div>
-      <div onClick={getScore}>GET SCORE</div>
-    </div>
+      <div className="text-[18px]">
+        <span>Points to take: </span>
+        <span className="font-semibold">{scoreMessage}</span>
+      </div>
+      <CommonButton
+        buttonText="Get Score"
+        buttonFunction={getScore}
+        buttonStyle="px-2"
+      />
+    </main>
   );
 }
