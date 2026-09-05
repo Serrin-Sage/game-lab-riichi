@@ -51,8 +51,8 @@ export const GameForm = ({ isModalOpen, setIsModalOpen }: GameFormProps) => {
       await queryClient.invalidateQueries({ queryKey: ["users"] });
       setIsSubmitting(false);
       setIsModalOpen(false);
-      setPlayers([]);
-      setScores([]);
+      setPlayers([null, null, null, null]);
+      setScores(["", "", "", ""]);
     } catch (submissionError) {
       setIsSubmitting(false);
       setError(
