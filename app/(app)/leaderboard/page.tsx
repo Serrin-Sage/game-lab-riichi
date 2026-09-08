@@ -50,7 +50,7 @@ export default function LeaderboardPage() {
         <p>No players have been added yet.</p>
       )}
       {!isLoading && !isError && leaderboardRows.length > 0 && (
-        <div className="overflow-x-auto max-h-[calc(100vh-17rem)] overflow-y-auto overscroll-contain">
+        <div className="overflow-x-auto max-h-[calc(100vh-18rem)] overflow-y-auto overscroll-contain mb-4">
           <table className="w-full border-separate border-spacing-y-0 text-left text-sm sm:text-base">
             <thead className="">
               <tr className="text-mahjong-gold  bg-mahjong-red ">
