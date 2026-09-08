@@ -50,19 +50,23 @@ export default function LeaderboardPage() {
         <p>No players have been added yet.</p>
       )}
       {!isLoading && !isError && leaderboardRows.length > 0 && (
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto max-h-[calc(100vh-17rem)] overflow-y-auto overscroll-contain">
           <table className="w-full border-separate border-spacing-y-0 text-left text-sm sm:text-base">
             <thead className="">
-              <tr className="text-mahjong-gold  bg-mahjong-red">
-                <th className="px-3 py-2 font-semibold">Rank</th>
-                <th className="px-3 py-2 font-semibold">Name</th>
-                <th className="px-3 py-2 font-semibold text-center">
+              <tr className="text-mahjong-gold  bg-mahjong-red ">
+                <th className="sticky top-0 z-10 bg-mahjong-red px-3 py-2 font-semibold border-b border-mahjong-gold">
+                  Rank
+                </th>
+                <th className="sticky top-0 z-10 bg-mahjong-red px-3 py-2 font-semibold border-b border-mahjong-gold">
+                  Name
+                </th>
+                <th className="sticky top-0 z-10 bg-mahjong-red px-3 py-2 text-center font-semibold border-b border-mahjong-gold">
                   Total Score
                 </th>
-                <th className="px-3 py-2 font-semibold text-center">
+                <th className="sticky top-0 z-10 bg-mahjong-red px-3 py-2 text-center font-semibold border-b border-mahjong-gold">
                   # of Games
                 </th>
-                <th className="px-3 py-2 font-semibold text-center">
+                <th className="sticky top-0 z-10 bg-mahjong-red px-3 py-2 text-center font-semibold border-b border-mahjong-gold">
                   Average Score
                 </th>
               </tr>

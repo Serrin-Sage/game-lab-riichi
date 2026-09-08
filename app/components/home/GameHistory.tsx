@@ -4,7 +4,7 @@ import { PlacementBadge } from "../games/PlacementBadge";
 export const GameHistory = () => {
   const { gamesList } = useAppContext();
   return (
-    <div className="grid max-h-[calc(100dvh-11rem)] gap-4 overflow-y-auto overscroll-contain px-1 pb-4">
+    <div className="grid max-h-[calc(100dvh-18rem)] gap-4 overflow-y-auto overscroll-contain px-1 pb-4">
       {gamesList.map((game) => (
         <div
           className="border border-mahjong-gold rounded-[10px] p-4 bg-mahjong-red/70 mx-0 sm:mx-8"
