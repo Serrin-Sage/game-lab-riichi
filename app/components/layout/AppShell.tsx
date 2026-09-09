@@ -8,6 +8,10 @@ import { NewPlayerModal } from "../players/NewPlayerModal";
 import { Header } from "./Header";
 import { ToastContainer } from "react-toastify";
 import { CommonButton } from "../home/CommonButton";
+import { useAppContext } from "@/app/context/AppContext";
+import { Combobox } from "@headlessui/react";
+import { UserListDropdown } from "../players/UserListDropdown";
+import { Profile } from "@/app/lib/types";
 
 const navItems = [
   { href: "/history", label: "History" },
@@ -17,9 +21,14 @@ const navItems = [
 
 export const AppShell = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
+  const { selectedOverviewProfile, setSelectedOverviewProfile } =
+    useAppContext();
   const [isNewPlayerModalOpen, setIsNewPlayerModalOpen] = useState(false);
   const [isGameFormModalOpen, setIsGameFormModalOpen] = useState(false);
 
+  const handleProfileChange = (profile: Profile | null) => {
+    if (profile) setSelectedOverviewProfile(profile);
+  };
   return (
     <main className="app-shell bg-black min-h-dvh text-white">
       <Header setIsModalOpen={() => setIsNewPlayerModalOpen(true)} />
@@ -51,6 +60,17 @@ export const AppShell = ({ children }: { children: React.ReactNode }) => {
               </Link>
             );
           })}
+          <div></div>
+          <UserListDropdown
+            value={selectedOverviewProfile}
+            onChange={handleProfileChange}
+          />
+          <Link
+            href={`/players/${selectedOverviewProfile?.id}`}
+            className={`rounded-md border px-3 py-2 text-sm transition `}
+          >
+            {selectedOverviewProfile?.name}
+          </Link>
         </nav>
       </div>
 
