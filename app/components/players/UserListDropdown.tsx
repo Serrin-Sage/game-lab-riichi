@@ -7,6 +7,7 @@ import {
 import { useAppContext } from "../../context/AppContext";
 import { useState } from "react";
 import type { Profile } from "../../lib/types";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 interface UserListDropdownProps {
@@ -24,6 +25,7 @@ export const UserListDropdown = ({
 }: UserListDropdownProps) => {
   const { userList, setSelectedOverviewProfile } = useAppContext();
   const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
   const filteredProfile =
     searchQuery === ""
       ? userList
@@ -36,6 +38,7 @@ export const UserListDropdown = ({
   );
   const handleExit = () => {
     setSelectedOverviewProfile(null);
+    router.push(`/history`);
   };
   return (
     <div className="flex">
@@ -48,7 +51,7 @@ export const UserListDropdown = ({
           aria-label="Player"
           displayValue={(user: Profile) => user?.name}
           onChange={(event) => setSearchQuery(event.target.value)}
-          className={`border-y border-l border-[#928989] rounded-sm w-27.5 pl-1.25 py-1.25`}
+          className={`${value ? "w-27.5 border-y border-l rounded-l-sm" : "w-33.5 border rounded-sm"}  border-[#928989]   pl-1.25 py-1.25`}
           placeholder={placeholderText}
         />
         <ComboboxOptions
@@ -65,18 +68,20 @@ export const UserListDropdown = ({
             </ComboboxOption>
           ))}
         </ComboboxOptions>
-        <div
-          onClick={handleExit}
-          className="border-y border-r rounded-r-sm border-[#928989]"
-        >
-          <Image
-            src="/CloseIcon.svg"
-            alt="East wind"
-            width={18}
-            height={18}
-            className="h-[18px] w-[18px] object-contain"
-          />
-        </div>
+        {value && (
+          <div
+            onClick={handleExit}
+            className={`border rounded-r-sm border-[#928989] flex items-center justify-center cursor-pointer`}
+          >
+            <Image
+              src="/CloseIcon.svg"
+              alt="East wind"
+              width={22}
+              height={22}
+              className={`h-5.5 w-5.5 object-contain`}
+            />
+          </div>
+        )}
       </Combobox>
     </div>
   );

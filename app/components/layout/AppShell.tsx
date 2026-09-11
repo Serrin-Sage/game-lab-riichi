@@ -10,8 +10,6 @@ import { ToastContainer } from "react-toastify";
 import { CommonButton } from "../home/CommonButton";
 import { useAppContext } from "@/app/context/AppContext";
 
-import Image from "next/image";
-
 const navItems = [
   { href: "/history", label: "History" },
   { href: "/leaderboard", label: "Leaderboard" },
