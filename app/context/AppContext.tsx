@@ -23,7 +23,7 @@ type AppContextValue = {
   setScoreResults: Dispatch<SetStateAction<ScoreResult[]>>;
   addGame: (game: Game) => void;
   selectedOverviewProfile: Profile | null;
-  setSelectedOverviewProfile: (profile: Profile) => void;
+  setSelectedOverviewProfile: (profile: Profile | null) => void;
 };
 
 const AppContext = createContext<AppContextValue | undefined>(undefined);

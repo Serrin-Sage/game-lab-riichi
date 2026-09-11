@@ -38,6 +38,9 @@ export default function PlayerPage() {
 
   return (
     <main className="grid gap-4 p-2 text-white">
+      <div className="flex justify-center">
+        <h2 className="text-[28px] font-bold">Player Overview</h2>
+      </div>
       <div className="rounded-[10px] border border-mahjong-gold bg-mahjong-red p-4">
         <div className="flex items-center gap-3">
           <span

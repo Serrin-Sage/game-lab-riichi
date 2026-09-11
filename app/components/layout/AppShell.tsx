@@ -55,8 +55,6 @@ export const AppShell = ({ children }: { children: React.ReactNode }) => {
               </Link>
             );
           })}
-          <div></div>
-
           {selectedOverviewProfile && (
             <Link
               href={`/players/${selectedOverviewProfile?.id}`}
