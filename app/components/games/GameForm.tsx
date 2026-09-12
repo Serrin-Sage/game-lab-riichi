@@ -63,6 +63,14 @@ export const GameForm = ({ isModalOpen, setIsModalOpen }: GameFormProps) => {
     }
   };
 
+  const handlePlayerInput = (profile: Profile | null, index: number) => {
+    setPlayers((currentPlayers) =>
+      currentPlayers.map((currentPlayer, playerIndex) =>
+        playerIndex === index ? profile : currentPlayer,
+      ),
+    );
+  };
+
   const handleScoreInput = (
     event: ChangeEvent<HTMLInputElement, HTMLInputElement>,
     index: number,
@@ -70,6 +78,20 @@ export const GameForm = ({ isModalOpen, setIsModalOpen }: GameFormProps) => {
     setScores((currentScores) =>
       currentScores.map((score, scoreIndex) =>
         scoreIndex === index ? event.target.value : score,
+      ),
+    );
+  };
+
+  const handleExit = (index: number) => {
+    setPlayers((currentPlayers) =>
+      currentPlayers.map((player, playerIndex) =>
+        playerIndex === index ? null : player,
+      ),
+    );
+
+    setScores((currentScores) =>
+      currentScores.map((score, scoreIndex) =>
+        scoreIndex === index ? "" : score,
       ),
     );
   };
@@ -86,7 +108,11 @@ export const GameForm = ({ isModalOpen, setIsModalOpen }: GameFormProps) => {
           className={`w-85 border-white border flex p-4 items-center flex-col bg-mahjong-red text-white rounded-[10px]`}
         >
           <DialogTitle className={`text-[26px]`}>Game Form</DialogTitle>
-          <form onSubmit={handleSubmit} className="flex gap-4 flex-col">
+          <form
+            onSubmit={handleSubmit}
+            className="flex gap-4 flex-col"
+            id="game-mode-selector"
+          >
             <select
               value={mode}
               onChange={(event) => updateMode(event.target.value as GameMode)}
@@ -103,13 +129,8 @@ export const GameForm = ({ isModalOpen, setIsModalOpen }: GameFormProps) => {
                 <div className="flex gap-2" key={index}>
                   <UserListDropdown
                     value={player}
-                    onChange={(profile) =>
-                      setPlayers((currentPlayers) =>
-                        currentPlayers.map((currentPlayer, playerIndex) =>
-                          playerIndex === index ? profile : currentPlayer,
-                        ),
-                      )
-                    }
+                    onChange={(profile) => handlePlayerInput(profile, index)}
+                    onExit={() => handleExit(index)}
                     excludedProfileIds={selectedIds}
                     placeholderText={`Player ${index + 1}`}
                   />

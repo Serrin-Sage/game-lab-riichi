@@ -24,15 +24,21 @@ export const Header = ({ setIsModalOpen }: HeaderProps) => {
     },
     [router, setSelectedOverviewProfile],
   );
+
+  const handleExit = () => {
+    setSelectedOverviewProfile(null);
+    router.push(`/history`);
+  };
   return (
-    <div className="flex flex-row justify-between p-4 bg-mahjong-red text-white">
+    <div className="flex flex-row items-center justify-between p-4 bg-mahjong-red text-white">
       <div>
         <h1>Game Lab Riichi</h1>
       </div>
-      <div className="flex flex-row gap-4">
+      <div className="flex flex-row gap-2">
         <UserListDropdown
           value={selectedOverviewProfile}
           onChange={handleProfileChange}
+          onExit={handleExit}
           placeholderText="view player"
         />
         <CommonButton

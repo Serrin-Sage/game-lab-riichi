@@ -7,12 +7,12 @@ import {
 import { useAppContext } from "../../context/AppContext";
 import { useState } from "react";
 import type { Profile } from "../../lib/types";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 interface UserListDropdownProps {
   value: Profile | null;
   onChange: (profile: Profile | null) => void;
+  onExit: () => void;
   excludedProfileIds?: string[];
   placeholderText?: string;
 }
@@ -20,12 +20,13 @@ interface UserListDropdownProps {
 export const UserListDropdown = ({
   value,
   onChange,
+  onExit,
   excludedProfileIds = [],
   placeholderText,
 }: UserListDropdownProps) => {
-  const { userList, setSelectedOverviewProfile } = useAppContext();
+  const { userList } = useAppContext();
   const [searchQuery, setSearchQuery] = useState("");
-  const router = useRouter();
+
   const filteredProfile =
     searchQuery === ""
       ? userList
@@ -36,10 +37,7 @@ export const UserListDropdown = ({
     (profile) =>
       !excludedProfileIds.includes(profile.id) || profile.id === value?.id,
   );
-  const handleExit = () => {
-    setSelectedOverviewProfile(null);
-    router.push(`/history`);
-  };
+
   return (
     <div className="flex">
       <Combobox
@@ -70,7 +68,7 @@ export const UserListDropdown = ({
         </ComboboxOptions>
         {value && (
           <div
-            onClick={handleExit}
+            onClick={onExit}
             className={`border rounded-r-sm border-[#928989] flex items-center justify-center cursor-pointer`}
           >
             <Image
