@@ -3,7 +3,9 @@
 import {
   createContext,
   useContext,
+  useMemo,
   useState,
+  useCallback,
   type Dispatch,
   type ReactNode,
   type SetStateAction,
@@ -51,49 +53,70 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     queryFn: fetchGames,
   });
 
-  const gamesList: Game[] = storedGames.map((game) => ({
-    id: game.id,
-    date: game.created_at,
-    mode: game.mode,
-    players: (game.GamePlayers ?? []).map((result) => {
-      const profile = userList.find((user) => user.id === result.profile_id);
+  const userMap = useMemo(
+    () => new Map(userList.map((user) => [user.id, user])),
+    [userList],
+  );
 
-      return {
-        ...(profile ?? {
-          id: result.profile_id,
-          name: "Unknown player",
-          color: "#928989",
-          gameHistory: [],
-          rank: 0,
+  const gamesList = useMemo<Game[]>(
+    () =>
+      storedGames.map((game) => ({
+        id: game.id,
+        date: game.created_at,
+        mode: game.mode,
+        players: (game.GamePlayers ?? []).map((result) => {
+          const profile = userMap.get(result.profile_id);
+
+          return {
+            ...(profile ?? {
+              id: result.profile_id,
+              name: "Unknown player",
+              color: "#928989",
+              gameHistory: [],
+              rank: 0,
+            }),
+            score: result.score,
+            placement: result.placement,
+            adjustment: result.adjustment,
+          };
         }),
-        score: result.score,
-        placement: result.placement,
-        adjustment: result.adjustment,
-      };
-    }),
-  }));
+      })),
+    [storedGames, userMap],
+  );
 
-  const addGame = (game: Game) => {
+  const addGame = useCallback((game: Game) => {
     setGames((currentGames) => [...currentGames, game]);
-  };
+  }, []);
+
+  const contextValue = useMemo(
+    () => ({
+      userList,
+      gamesList,
+      isLoading: isLoading || isGamesLoading,
+      isError: isError || isGamesError,
+      games,
+      scoreResults,
+      setScoreResults,
+      addGame,
+      selectedOverviewProfile,
+      setSelectedOverviewProfile,
+    }),
+    [
+      userList,
+      gamesList,
+      isLoading,
+      isGamesLoading,
+      isError,
+      isGamesError,
+      games,
+      scoreResults,
+      addGame,
+      selectedOverviewProfile,
+    ],
+  );
 
   return (
-    <AppContext.Provider
-      value={{
-        userList,
-        gamesList,
-        isLoading: isLoading || isGamesLoading,
-        isError: isError || isGamesError,
-        games,
-        scoreResults,
-        setScoreResults,
-        addGame,
-        selectedOverviewProfile,
-        setSelectedOverviewProfile,
-      }}
-    >
-      {children}
-    </AppContext.Provider>
+    <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>
   );
 };
 
