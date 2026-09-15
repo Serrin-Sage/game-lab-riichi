@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useAppContext } from "../../../context/AppContext";
+import { GameGraph } from "@/app/components/players/GameGraph";
 
 export default function PlayerPage() {
   const params = useParams<{ id: string }>();
@@ -147,6 +148,9 @@ export default function PlayerPage() {
               </div>
             );
           })}
+          <div>
+            <GameGraph playerData={playerGames} />
+          </div>
         </div>
       )}
     </main>
