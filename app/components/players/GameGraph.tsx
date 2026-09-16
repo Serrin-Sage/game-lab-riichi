@@ -1,12 +1,22 @@
-import { CartesianGrid, Legend, Line, LineChart, XAxis, YAxis } from "recharts";
-import { Game } from "@/app/lib/types";
+import {
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 interface GameGraphProps {
-  playerData: Game[];
+  playerData: {
+    date: string;
+    placement: number;
+    score: number;
+  }[];
 }
 
 export const GameGraph = ({ playerData }: GameGraphProps) => {
-  console.log(playerData);
   return (
     <LineChart
       style={{ width: "100%", aspectRatio: 1.618, maxWidth: 600 }}
@@ -14,9 +24,15 @@ export const GameGraph = ({ playerData }: GameGraphProps) => {
       data={playerData}
     >
       <CartesianGrid />
-      <Line dataKey="Placement Trend" />
+      <Line dataKey="placement" name="Placement" type="monotone" />
       <XAxis dataKey="date" />
-      <YAxis dataKey="placement" />
+      <YAxis
+        dataKey="placement"
+        domain={[1, 4]}
+        reversed
+        allowDecimals={false}
+      />
+      <Tooltip />
       <Legend />
     </LineChart>
   );
