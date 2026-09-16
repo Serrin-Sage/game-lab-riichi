@@ -45,19 +45,25 @@ export default function PlayerPage() {
     .map((game) => getPlayerStatsForGame(game))
     .filter((entry): entry is NonNullable<typeof entry> => entry !== undefined);
 
-  const playerGraphData = playerGames.flatMap((game) => {
-    const playerStats = getPlayerStatsForGame(game);
+  const playerGraphData = playerGames
+    .flatMap((game) => {
+      const playerStats = getPlayerStatsForGame(game);
 
-    return playerStats && typeof playerStats.placement === "number"
-      ? [
-          {
-            date: game.date,
-            placement: playerStats.placement,
-            score: playerStats.score,
-          },
-        ]
-      : [];
-  });
+      return playerStats && typeof playerStats.placement === "number"
+        ? [
+            {
+              date: game.date,
+              placement: playerStats.placement,
+              score: playerStats.score,
+            },
+          ]
+        : [];
+    })
+    .sort(
+      (firstGame, secondGame) =>
+        new Date(firstGame.date).getTime() -
+        new Date(secondGame.date).getTime(),
+    );
 
   const bestScore = getBestScore(playerStatsList);
   const averageScore = getAverageScore(playerStatsList);
