@@ -169,11 +169,16 @@ export default function PlayerPage() {
                       Placement:{" "}
                       <PlacementBadge placement={playerStats?.placement ?? 0} />
                     </div>
-                    <p>
+                    <div>
                       Adjustment:{" "}
-                      {(playerStats?.adjustment ?? 0) > 0 ? "+" : ""}
-                      {playerStats?.adjustment ?? 0}
-                    </p>
+                      <span
+                        className={`${(playerStats?.adjustment ?? 0) > 0 ? "text-green-400" : "text-red-600"}`}
+                      >
+                        {(playerStats?.adjustment ?? 0) > 0 ? "+" : ""}
+                        {playerStats?.adjustment ?? 0}
+                      </span>
+                    </div>
+                    <p></p>
                   </div>
                 </div>
               );
