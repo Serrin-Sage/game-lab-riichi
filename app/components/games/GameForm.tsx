@@ -103,7 +103,7 @@ export const GameForm = ({ isModalOpen, setIsModalOpen }: GameFormProps) => {
 
   return (
     <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-      <div className="fixed inset-0 bg-black/50 flex w-screen items-center justify-center p-4">
+      <div className="fixed inset-0 bg-black/50 flex w-screen items-center justify-center p-4 z-100">
         <DialogPanel
           className={`w-85 border-white border flex p-4 items-center flex-col bg-mahjong-red text-white rounded-[10px]`}
         >
