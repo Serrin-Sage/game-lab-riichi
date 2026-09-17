@@ -42,7 +42,12 @@ export const GameGraph = ({ playerData }: GameGraphProps) => {
         width: "100%",
         aspectRatio: 1.618,
         maxWidth: 600,
-        padding: "3px",
+      }}
+      margin={{
+        top: 20,
+        right: 20,
+        bottom: 5,
+        left: 0,
       }}
       responsive
       data={playerData}
