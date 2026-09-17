@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useAppContext } from "../../../context/AppContext";
+import { GameGraph } from "@/app/components/players/GameGraph";
+import { PlacementBadge } from "@/app/components/games/PlacementBadge";
 
 export default function PlayerPage() {
   const params = useParams<{ id: string }>();
@@ -43,6 +45,26 @@ export default function PlayerPage() {
   const playerStatsList = playerGames
     .map((game) => getPlayerStatsForGame(game))
     .filter((entry): entry is NonNullable<typeof entry> => entry !== undefined);
+
+  const playerGraphData = playerGames
+    .flatMap((game) => {
+      const playerStats = getPlayerStatsForGame(game);
+
+      return playerStats && typeof playerStats.placement === "number"
+        ? [
+            {
+              date: game.date,
+              placement: playerStats.placement,
+              score: playerStats.score,
+            },
+          ]
+        : [];
+    })
+    .sort(
+      (firstGame, secondGame) =>
+        new Date(firstGame.date).getTime() -
+        new Date(secondGame.date).getTime(),
+    );
 
   const bestScore = getBestScore(playerStatsList);
   const averageScore = getAverageScore(playerStatsList);
@@ -113,40 +135,55 @@ export default function PlayerPage() {
           </div>
         </div>
       </div>
-
-      <div className="flex justify-center">
-        <h3 className="text-2xl font-semibold">Recent games</h3>
-      </div>
-
       {playerGames.length === 0 ? (
         <p>No games recorded for this player yet.</p>
       ) : (
-        <div className="grid gap-3">
-          {playerGames.map((game) => {
-            const playerStats = getPlayerStatsForGame(game);
+        <div className="flex flex-col md:flex-row">
+          <div className="w-full">
+            <div className="flex justify-center">
+              <h3 className="text-2xl font-semibold">Placement history</h3>
+            </div>
+            <GameGraph playerData={playerGraphData} />
+          </div>
+          <div className="grid w-full gap-4">
+            <div className="flex justify-center">
+              <h3 className="text-2xl font-semibold">Recent games</h3>
+            </div>
+            {playerGames.map((game) => {
+              const playerStats = getPlayerStatsForGame(game);
 
-            return (
-              <div
-                key={game.id}
-                className="rounded-[10px] border border-mahjong-gold bg-mahjong-red/70 p-4"
-              >
-                <div className="flex items-center justify-between gap-4 border-b border-white/30 pb-2">
-                  <h4>{game.mode} game</h4>
-                  <time dateTime={game.date}>
-                    {new Date(game.date).toLocaleDateString()}
-                  </time>
+              return (
+                <div
+                  key={game.id}
+                  className="rounded-[10px] border border-mahjong-gold bg-mahjong-red/70 p-4"
+                >
+                  <div className="flex items-center justify-between gap-4 border-b border-white/30 pb-2">
+                    <h4>{game.mode} game</h4>
+                    <time dateTime={game.date}>
+                      {new Date(game.date).toLocaleDateString()}
+                    </time>
+                  </div>
+                  <div className="pt-3">
+                    <p>Score: {playerStats?.score.toLocaleString()}</p>
+                    <div>
+                      Placement:{" "}
+                      <PlacementBadge placement={playerStats?.placement ?? 0} />
+                    </div>
+                    <div>
+                      Adjustment:{" "}
+                      <span
+                        className={`${(playerStats?.adjustment ?? 0) > 0 ? "text-green-400" : "text-red-600"}`}
+                      >
+                        {(playerStats?.adjustment ?? 0) > 0 ? "+" : ""}
+                        {playerStats?.adjustment ?? 0}
+                      </span>
+                    </div>
+                    <p></p>
+                  </div>
                 </div>
-                <div className="pt-3">
-                  <p>Score: {playerStats?.score.toLocaleString()}</p>
-                  <p>Placement: #{playerStats?.placement ?? "-"}</p>
-                  <p>
-                    Adjustment: {(playerStats?.adjustment ?? 0) > 0 ? "+" : ""}
-                    {playerStats?.adjustment ?? 0}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       )}
     </main>
