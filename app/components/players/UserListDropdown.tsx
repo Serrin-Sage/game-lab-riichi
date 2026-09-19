@@ -54,7 +54,7 @@ export const UserListDropdown = ({
         />
         <ComboboxOptions
           anchor="bottom"
-          className="bg-[#630710] w-37.5 border-[#928989] border rounded-sm text-white max-h-12.5 overflow-auto"
+          className="bg-[#630710] w-37.5 border-[#928989] border rounded-sm text-white max-h-12.5 overflow-auto z-100"
         >
           {availableProfiles.map((profile) => (
             <ComboboxOption
