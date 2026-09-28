@@ -29,7 +29,7 @@ export default function LeaderboardPage() {
       };
     })
     .sort(
-      (a, b) => b.averageScore - a.averageScore || a.name.localeCompare(b.name),
+      (a, b) => b.totalScore - a.totalScore || a.name.localeCompare(b.name),
     );
 
   const formatAdjustment = (value: number) => {
