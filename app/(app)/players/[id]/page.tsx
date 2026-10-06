@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { useParams } from "next/navigation";
 import { useAppContext } from "../../../context/AppContext";
 import { GameGraph } from "@/app/components/players/GameGraph";
@@ -9,6 +10,7 @@ import { PlacementBadge } from "@/app/components/games/PlacementBadge";
 export default function PlayerPage() {
   const params = useParams<{ id: string }>();
   const { userList, gamesList, isLoading, isError } = useAppContext();
+  const [gameRange, setGameRange] = useState(0);
 
   const player = userList.find((profile) => profile.id === params.id);
   const playerGames = gamesList.filter((game) =>
@@ -143,7 +145,7 @@ export default function PlayerPage() {
             <div className="flex justify-center">
               <h3 className="text-2xl font-semibold">Placement history</h3>
             </div>
-            <GameGraph playerData={playerGraphData} />
+            <GameGraph playerData={playerGraphData} gameRange={gameRange} />
           </div>
           <div className="grid w-full gap-4">
             <div className="flex justify-center">

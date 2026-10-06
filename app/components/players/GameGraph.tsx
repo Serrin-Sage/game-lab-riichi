@@ -14,6 +14,7 @@ interface GameGraphProps {
     placement: number;
     score: number;
   }[];
+  gameRange: number;
 }
 
 export const GameGraph = ({ playerData }: GameGraphProps) => {
@@ -53,8 +54,17 @@ export const GameGraph = ({ playerData }: GameGraphProps) => {
       data={playerData}
     >
       <CartesianGrid />
-      <Line dataKey="placement" name="Placement" stroke="#7d0914" />
-      <XAxis dataKey="date" tickFormatter={formatDate} />
+      <Line
+        dataKey="placement"
+        name="Placement"
+        stroke="#7d0914"
+        strokeWidth={2}
+      />
+      <XAxis
+        dataKey="date"
+        tickFormatter={formatDate}
+        allowDataOverflow={true}
+      />
       <YAxis
         dataKey="placement"
         domain={[1, 4]}
