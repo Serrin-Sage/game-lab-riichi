@@ -6,11 +6,12 @@ import { useParams } from "next/navigation";
 import { useAppContext } from "../../../context/AppContext";
 import { GameGraph } from "@/app/components/players/GameGraph";
 import { PlacementBadge } from "@/app/components/games/PlacementBadge";
+import Image from "next/image";
 
 export default function PlayerPage() {
   const params = useParams<{ id: string }>();
   const { userList, gamesList, isLoading, isError } = useAppContext();
-  const [gameRange, setGameRange] = useState(0);
+  const [gameRange, setGameRange] = useState(5);
 
   const player = userList.find((profile) => profile.id === params.id);
   const playerGames = gamesList.filter((game) =>
@@ -95,6 +96,14 @@ export default function PlayerPage() {
     );
   }
 
+  const visiblePlayerGraphData = playerGraphData.slice(-gameRange);
+
+  const handleGameRangeView = (viewMore: boolean, selectedRange: number) => {
+    setGameRange((current) =>
+      viewMore ? current + selectedRange : Math.max(5, current - selectedRange),
+    );
+  };
+
   return (
     <main className="grid gap-4 p-2 text-white">
       <div className="flex justify-center items-center">
@@ -140,12 +149,42 @@ export default function PlayerPage() {
       {playerGames.length === 0 ? (
         <p>No games recorded for this player yet.</p>
       ) : (
-        <div className="flex flex-col md:flex-row">
-          <div className="w-full">
-            <div className="flex justify-center">
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="w-full flex flex-col items-center">
+            <div className="flex justify-center items-center gap-4">
               <h3 className="text-2xl font-semibold">Placement history</h3>
             </div>
-            <GameGraph playerData={playerGraphData} gameRange={gameRange} />
+            <GameGraph
+              playerData={visiblePlayerGraphData}
+              gameRange={gameRange}
+            />
+            <div className="flex items-center gap-2">
+              <div
+                onClick={() => handleGameRangeView(false, 5)}
+                className={`${gameRange === 5 ? "opacity-50 cursor-default" : "cursor-pointer"} border rounded-full border-white p-0.5`}
+              >
+                <Image
+                  src={"/minus-icon.svg"}
+                  alt="East wind"
+                  width={15}
+                  height={15}
+                  className="h-3.75 w-3.75 object-contain"
+                />
+              </div>
+              past <span>{gameRange}</span> games
+              <div
+                onClick={() => handleGameRangeView(true, 5)}
+                className="border rounded-full border-white p-0.5 cursor-pointer"
+              >
+                <Image
+                  src={"/plus-icon.svg"}
+                  alt="East wind"
+                  width={15}
+                  height={15}
+                  className="h-3.75 w-3.75 object-contain"
+                />
+              </div>
+            </div>
           </div>
           <div className="grid w-full gap-4">
             <div className="flex justify-center">
