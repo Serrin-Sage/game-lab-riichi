@@ -1,11 +1,18 @@
 import { useAppContext } from "@/app/context/AppContext";
 import { PlacementBadge } from "../games/PlacementBadge";
+import { useState } from "react";
+import { CommonButton } from "./CommonButton";
 
 export const GameHistory = () => {
   const { gamesList } = useAppContext();
+  const [visibleGameCount, setVisibleGameCount] = useState(5);
+  const recentGames = [...gamesList].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+  );
+
   return (
     <div className="grid max-h-[calc(100dvh-18rem)] gap-4 overflow-y-auto overscroll-contain px-1 pb-4">
-      {gamesList.map((game) => (
+      {recentGames.slice(0, visibleGameCount).map((game) => (
         <div
           className="border border-mahjong-gold rounded-[10px] p-4 bg-mahjong-red/70 mx-0 sm:mx-8"
           key={game.id}
@@ -48,6 +55,13 @@ export const GameHistory = () => {
           </div>
         </div>
       ))}
+      {visibleGameCount < recentGames.length && (
+        <CommonButton
+          buttonText="Load more"
+          buttonStyle="mx-auto px-4 py-2"
+          buttonFunction={() => setVisibleGameCount((count) => count + 5)}
+        />
+      )}
     </div>
   );
 };
